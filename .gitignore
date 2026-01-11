@@ -1,0 +1,4 @@
+.venv/
+src/topicena.egg-info/
+outputs/
+.DS_Store

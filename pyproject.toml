@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "topicena"
+version = "0.1.0"
+description = "Topic-based Epistemic Network Analysis with Automated Semantic Coding"
+authors = [
+    { name = "TopicENA Team" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+
+dependencies = [
+    "bertopic",
+    "sentence-transformers",
+    "umap-learn",
+    "hdbscan",
+    "scikit-learn",
+    "pandas",
+    "plotly",
+    "kaleido"
+]
+
+[project.scripts]
+topicena = "topicena.cli:app"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
