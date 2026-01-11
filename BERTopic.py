@@ -1,33 +1,28 @@
 # https://github.com/MaartenGr/BERTopic
+# https://www.williampnicholson.com/2024-02-07-topic-modelling/
 
-# berTopic_demo.py
-# Reference style: https://www.williampnicholson.com/2024-02-07-topic-modelling/  (modular BERTopic pipeline + visualizations)
-# - Auto-download dataset (20 Newsgroups)
-# - Export multiple figures, including topic keyword barcharts
+
 
 import os
 import pandas as pd
 
 from sklearn.datasets import fetch_20newsgroups
 from sklearn.feature_extraction.text import CountVectorizer
-
 from sentence_transformers import SentenceTransformer
+
 from umap import UMAP
 from hdbscan import HDBSCAN
 
 from bertopic import BERTopic
 from bertopic.vectorizers import ClassTfidfTransformer
 
+NUM_TOPIC = 10
+NUM_WORD = 5
 
 def ensure_dir(path: str) -> None:
     os.makedirs(path, exist_ok=True)
 
-
 def try_write_png(fig, out_png: str) -> None:
-    """
-    BERTopic visualizations are Plotly figures.
-    Writing PNG needs kaleido: pip install -U kaleido
-    """
     try:
         fig.write_image(out_png, scale=2)
         print(f"[OK] Saved PNG: {out_png}")
@@ -39,8 +34,6 @@ def main():
     out_dir = "outputs"
     ensure_dir(out_dir)
 
-    # 1) Download a sample dataset automatically
-    #    (You can limit categories to make it faster/smaller.)
     categories = [
         "comp.graphics",
         "comp.sys.mac.hardware",
@@ -57,7 +50,6 @@ def main():
 
     print(f"Loaded docs: {len(docs)}")
 
-    # 2) Build a Nicholson-style modular BERTopic pipeline
     # Embeddings
     embedding_model = SentenceTransformer("all-mpnet-base-v2")
 
@@ -97,12 +89,9 @@ def main():
         verbose=True,
     )
 
-    # 3) Fit
     topics, probs = topic_model.fit_transform(docs)
     print("Done fitting BERTopic.")
 
-    # 4) Export "keywords per topic" table (核心需求：各群關鍵字)
-    #    topic_model.get_topic(topic_id) returns list[(word, weight), ...]
     rows = []
     for topic_id in sorted(set(topics)):
         if topic_id == -1:
@@ -122,7 +111,6 @@ def main():
     df_kw.to_csv(out_csv, index=False, encoding="utf-8-sig")
     print(f"[OK] Saved keyword table: {out_csv}")
 
-    # 5) Visualizations (Plotly HTML + optional PNG)
     # (A) Topic overview
     fig_topics = topic_model.visualize_topics()
     out_html = os.path.join(out_dir, "fig_topics_overview.html")
@@ -130,8 +118,8 @@ def main():
     print(f"[OK] Saved HTML: {out_html}")
     try_write_png(fig_topics, os.path.join(out_dir, "fig_topics_overview.png"))
 
-    # (B) "各群關鍵字" barchart (most important for your requirement)
-    fig_barchart = topic_model.visualize_barchart(top_n_topics=12, n_words=10)
+    # (B) Keywords
+    fig_barchart = topic_model.visualize_barchart(top_n_topics=NUM_TOPIC, n_words=NUM_WORD)
     out_html = os.path.join(out_dir, "fig_topic_keywords_barchart.html")
     fig_barchart.write_html(out_html)
     print(f"[OK] Saved HTML: {out_html}")
