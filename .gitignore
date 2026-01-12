@@ -2,3 +2,5 @@
 src/topicena.egg-info/
 outputs/
 .DS_Store
+.Rproj.user
+r/r.Rproj

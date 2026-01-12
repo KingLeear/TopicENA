@@ -51,6 +51,10 @@ BERTopic Test
 ```
 
 ```bash
+(venv) python calling_r.py
+```
+
+```bash
 topicena run \
   --input data/sample/sample_students.csv \
   --text-col text \

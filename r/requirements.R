@@ -1,5 +1,7 @@
 required_packages <- c(
-  "rENA"
+  "rENA",
+  "htmlwidgets",
+  "webshot2"
 )
 
 installed <- rownames(installed.packages())

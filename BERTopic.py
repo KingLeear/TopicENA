@@ -74,7 +74,7 @@ def main():
     vectorizer_model = CountVectorizer(
         stop_words="english",
         ngram_range=(1, 2),
-        min_df=5,
+        min_df=1,
     )
     ctfidf_model = ClassTfidfTransformer()
 
@@ -92,24 +92,54 @@ def main():
     topics, probs = topic_model.fit_transform(docs)
     print("Done fitting BERTopic.")
 
-    rows = []
+    # rows = []
+    # for topic_id in sorted(set(topics)):
+    #     if topic_id == -1:
+    #         continue  # -1 is outliers
+    #     words = topic_model.get_topic(topic_id) or []
+    #     top_words = [w for (w, _) in words[:15]]
+    #     rows.append(
+    #         {
+    #             "topic_id": topic_id,
+    #             "top_keywords": ", ".join(top_words),
+    #             "doc_count": int((pd.Series(topics) == topic_id).sum()),
+    #         }
+    #     )
+
+    # df_kw = pd.DataFrame(rows).sort_values(["doc_count"], ascending=False)
+    # out_csv = os.path.join(out_dir, "topic_keywords.csv")
+    # df_kw.to_csv(out_csv, index=False, encoding="utf-8-sig")
+    # print(f"[OK] Saved keyword table: {out_csv}")
+
+    output_dict = dict()
+
     for topic_id in sorted(set(topics)):
         if topic_id == -1:
             continue  # -1 is outliers
         words = topic_model.get_topic(topic_id) or []
-        top_words = [w for (w, _) in words[:15]]
-        rows.append(
-            {
-                "topic_id": topic_id,
-                "top_keywords": ", ".join(top_words),
-                "doc_count": int((pd.Series(topics) == topic_id).sum()),
-            }
-        )
 
-    df_kw = pd.DataFrame(rows).sort_values(["doc_count"], ascending=False)
+        top_words = [w for (w, _) in words[:15]]
+        output_dict[topic_id] = top_words
+
+    new_columns = [
+        ".".join(output_dict[i][:3])
+        for i in range(len(output_dict))
+    ]
+
+    df = pd.get_dummies(topics, prefix="topic")
+    max_topic = max(topics)
+    all_columns = [f"topic_{i}" for i in range(max_topic + 1)]
+    df = df.reindex(columns=all_columns, fill_value=0)
+    df = df.astype(int)
+    df.columns = new_columns
+    df.insert(0, "docs", docs)
+
+    df['docs'] = df['docs'].str.split('.')
+    df = df.explode("docs")
     out_csv = os.path.join(out_dir, "topic_keywords.csv")
-    df_kw.to_csv(out_csv, index=False, encoding="utf-8-sig")
-    print(f"[OK] Saved keyword table: {out_csv}")
+    df.to_csv(out_csv, index=False, encoding="utf-8-sig")
+
+
 
     # (A) Topic overview
     fig_topics = topic_model.visualize_topics()
