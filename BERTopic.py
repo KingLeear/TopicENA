@@ -92,6 +92,7 @@ def main():
     topics, probs = topic_model.fit_transform(docs)
     print("Done fitting BERTopic.")
 
+    # version 0
     # rows = []
     # for topic_id in sorted(set(topics)):
     #     if topic_id == -1:
@@ -111,6 +112,44 @@ def main():
     # df_kw.to_csv(out_csv, index=False, encoding="utf-8-sig")
     # print(f"[OK] Saved keyword table: {out_csv}")
 
+    # version 1
+    # output_dict = dict()
+
+    # for topic_id in sorted(set(topics)):
+    #     if topic_id == -1:
+    #         continue  # -1 is outliers
+    #     words = topic_model.get_topic(topic_id) or []
+
+    #     top_words = [w for (w, _) in words[:15]]
+    #     output_dict[topic_id] = top_words
+
+    # new_columns = [
+    #     ".".join(output_dict[i][:3])
+    #     for i in range(len(output_dict))
+    # ]
+
+    # df = pd.get_dummies(topics, prefix="topic")
+    # max_topic = max(topics)
+    # all_columns = [f"topic_{i}" for i in range(max_topic + 1)]
+    # df = df.reindex(columns=all_columns, fill_value=0)
+    # df = df.astype(int)
+    # df.columns = new_columns
+    # df.insert(0, "docs", docs)
+
+    # df['docs'] = df['docs'].str.split('.')
+    # df = df.explode("docs")
+    # out_csv = os.path.join(out_dir, "topic_keywords.csv")
+    # df.to_csv(out_csv, index=False, encoding="utf-8-sig")
+
+
+
+    # version 2
+    th = 0.3
+    binary_arr = (probs >= th).astype(int)
+    df = pd.DataFrame(binary_arr)
+
+    number_of_keywords = 2
+
     output_dict = dict()
 
     for topic_id in sorted(set(topics)):
@@ -119,25 +158,25 @@ def main():
         words = topic_model.get_topic(topic_id) or []
 
         top_words = [w for (w, _) in words[:15]]
+
         output_dict[topic_id] = top_words
 
     new_columns = [
-        ".".join(output_dict[i][:3])
+        ".".join(output_dict[i][:number_of_keywords])
         for i in range(len(output_dict))
     ]
 
-    df = pd.get_dummies(topics, prefix="topic")
-    max_topic = max(topics)
-    all_columns = [f"topic_{i}" for i in range(max_topic + 1)]
-    df = df.reindex(columns=all_columns, fill_value=0)
-    df = df.astype(int)
     df.columns = new_columns
     df.insert(0, "docs", docs)
 
     df['docs'] = df['docs'].str.split('.')
     df = df.explode("docs")
-    out_csv = os.path.join(out_dir, "topic_keywords.csv")
+    df = df[df["docs"].notna() & df["docs"].str.strip().ne("")]
+
+    out_csv = os.path.join(out_dir, f"topic_keywords_{th}.csv")
     df.to_csv(out_csv, index=False, encoding="utf-8-sig")
+
+
 
 
 
