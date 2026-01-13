@@ -144,7 +144,41 @@ def main():
 
 
     # version 2
-    th = 0.3
+    # th = 0.3
+    # binary_arr = (probs >= th).astype(int)
+    # df = pd.DataFrame(binary_arr)
+
+    # number_of_keywords = 2
+
+    # output_dict = dict()
+
+    # for topic_id in sorted(set(topics)):
+    #     if topic_id == -1:
+    #         continue  # -1 is outliers
+    #     words = topic_model.get_topic(topic_id) or []
+
+    #     top_words = [w for (w, _) in words[:15]]
+
+    #     output_dict[topic_id] = top_words
+
+    # new_columns = [
+    #     ".".join(output_dict[i][:number_of_keywords])
+    #     for i in range(len(output_dict))
+    # ]
+
+    # df.columns = new_columns
+    # df.insert(0, "docs", docs)
+
+    # df['docs'] = df['docs'].str.split('.')
+    # df = df.explode("docs")
+    # df = df[df["docs"].notna() & df["docs"].str.strip().ne("")]
+
+    # out_csv = os.path.join(out_dir, f"topic_keywords_{th}.csv")
+    # df.to_csv(out_csv, index=False, encoding="utf-8-sig")
+
+
+    # version 3
+    th = 0.05
     binary_arr = (probs >= th).astype(int)
     df = pd.DataFrame(binary_arr)
 
@@ -156,9 +190,7 @@ def main():
         if topic_id == -1:
             continue  # -1 is outliers
         words = topic_model.get_topic(topic_id) or []
-
         top_words = [w for (w, _) in words[:15]]
-
         output_dict[topic_id] = top_words
 
     new_columns = [
@@ -167,11 +199,29 @@ def main():
     ]
 
     df.columns = new_columns
-    df.insert(0, "docs", docs)
+    df.insert(0, "text", docs)
 
-    df['docs'] = df['docs'].str.split('.')
-    df = df.explode("docs")
-    df = df[df["docs"].notna() & df["docs"].str.strip().ne("")]
+    import numpy as np
+
+    df["UserName"] = np.random.choice(
+        ["Alice", "Bob", "Cindy"],
+        size=len(df)
+    )
+
+    df["Condition"] = np.random.choice(
+        ["LDSE", "HDSE"],
+        size=len(df)
+    )
+
+    df = df.reset_index().rename(columns={"index": "ActivityNumber"})
+
+    df["text"] = df["text"].str.split(".")
+    df = df.explode("text")
+
+    df["text"] = df["text"].str.strip()
+    df = df[df["text"] != ""]
+
+    df = df[df["text"].notna() & df["text"].str.strip().ne("")]
 
     out_csv = os.path.join(out_dir, f"topic_keywords_{th}.csv")
     df.to_csv(out_csv, index=False, encoding="utf-8-sig")

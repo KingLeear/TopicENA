@@ -1,6 +1,7 @@
 # ena_example.R
 library(rENA)
 
+# Rscript /Users/owen/Documents/TopicENA/r/example.R /Users/owen/Documents/TopicENA/r/RS.data.rda /Users/owen/Documents/TopicENA/outputs
 # data(RS.data)
 
 args <- commandArgs(trailingOnly = TRUE)
