@@ -20,7 +20,8 @@ dependencies = [
     "scikit-learn",
     "pandas",
     "plotly",
-    "kaleido"
+    "kaleido",
+    "kagglehub"
 ]
 
 [project.scripts]

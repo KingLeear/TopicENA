@@ -7,7 +7,9 @@ library(rENA)
 
 # load example dataset from rENA
 # data = rENA::RS.data
-data <- read.csv("../outputs/topic_keywords_0.05.csv")
+data <- read.csv("../outputs/topic_keywords_0.05_reflection.csv") # Leet paper
+
+
 
 unitCols = c("Condition", "UserName")
 
@@ -34,12 +36,24 @@ set.ena = ena(
   units = unitCols,
   codes = codesCols,
   conversation = conversationCols,
-  window.size.back = 2,
+  window.size.back = 5,
   groupVar = groupsVar,
   groups = groups,
   mean = TRUE
 )
 
+# set.ena = ena(
+#   data = data,
+#   units = unitCols,
+#   codes = codesCols,
+#   conversation = conversationCols,
+#   window.size.back = 2,
+#   groupVar = groupsVar,
+#   groups = c("HDSE","LDSE"),
+#   mean = FALSE,
+#   center.align.to.origin = FALSE
+# )
+# 
 
 
 
@@ -48,63 +62,35 @@ set.ena = ena(
 
 
 
-ena.plot(set.ena, title = "FirstGame mean plot") |>
-  ena.plot.network(network = , colors = c("red"))
-
-ena.plot(set.ena, title = "SecondGame mean plot") |>
-  ena.plot.network(network = LDSE.mean, colors = c("blue"))
 
 
 
-# Subset lineweights for FirstGame
-first.game.lineweights = as.matrix(set.ena$line.weights$Condition$FirstGame)
-# Subset lineweights for SecondGame
-second.game.lineweights = as.matrix(set.ena$line.weights$Condition$SecondGame)
 
-first.game.mean = as.vector(colMeans(first.game.lineweights))
-second.game.mean = as.vector(colMeans(second.game.lineweights))
-subtracted.mean = first.game.mean - second.game.mean
+hdse.lineweights = as.matrix(set.ena$line.weights$Condition$HDSE)
+ldse.lineweights = as.matrix(set.ena$line.weights$Condition$LDSE)
+
+
+hdse.mean = as.vector(colMeans(hdse.lineweights))
+ldse.mean = as.vector(colMeans(ldse.lineweights))
+
+
+ena.plot(set.ena, title = "HDSE mean plot") |>
+  ena.plot.network(network = hdse.mean, colors = c("red"))
+
+ena.plot(set.ena, title = "LDSE mean plot") |>
+  ena.plot.network(network = ldse.mean, colors = c("blue"))
+
+
+subtracted.mean = hdse.mean - ldse.mean
 
 ena.plot(
   set.ena,
-  title = "Subtracted: FirstGame (red) - SecondGame (blue)"
+  title = "Subtracted: HDSE (red) - LDSE (blue)"
 ) |>
   ena.plot.network(
     network = subtracted.mean * 5,  # optional rescaling
     colors = c("red", "blue")
   )
-
-
-
-
-first.game.points = as.matrix(set.ena$points$Condition$FirstGame)
-
-ena.plot(set.ena, title = "FirstGame mean network and its points") |>
-  ena.plot.network(network = first.game.mean, colors = c("red")) |>
-  ena.plot.points(points = first.game.points, colors = c("red")) |>
-  ena.plot.group(point = first.game.points, colors =c("red"),
-                 confidence.interval = "box")
-
-second.game.points = as.matrix(set.ena$points$Condition$SecondGame)
-
-ena.plot(set.ena, title = "SecondGame mean network and its points") |>
-  ena.plot.network(network = second.game.mean, colors = c("blue")) |>
-  ena.plot.points(points = second.game.points, colors = c("blue")) |>
-  ena.plot.group(point = second.game.points, colors =c("blue"),
-                 confidence.interval = "box")
-
-
-ena.plot(set.ena, title = "Subtracted mean network: FirstGame (red) - SecondG
-ame (blue)") |>
-  ena.plot.network(network = subtracted.mean * 5,
-                   colors = c("red", "blue")) |>
-  ena.plot.points(points = first.game.points, colors = c("red")) |>
-  ena.plot.group(point = first.game.points, colors =c("red"),
-                 confidence.interval = "box") |>
-  ena.plot.points(points = second.game.points, colors = c("blue")) |>
-  ena.plot.group(point = second.game.points, colors =c("blue"),
-                 confidence.interval = "box")
-
 
 
 
@@ -124,3 +110,29 @@ plot = ena.plotter(set.ena,
                    groupVar = "Condition",
                    groups = c("HDSE","LDSE"),
                    subtractionMultiplier = 5)
+
+
+
+
+ena_first_points_d1 = as.matrix(set.ena$points$Condition$HDSE)[,1]
+ena_second_points_d1 = as.matrix(set.ena$points$Condition$LDSE)[,1]
+ena_first_points_d2 = as.matrix(set.ena$points$Condition$HDSE)[,2] 
+ena_second_points_d2 = as.matrix(set.ena$points$Condition$LDSE)[,2]
+t_test_d1 = t.test(ena_first_points_d1, ena_second_points_d1)
+t_test_d2 = t.test(ena_first_points_d2, ena_second_points_d2)
+t_test_d1
+t_test_d2
+
+
+mean(ena_first_points_d1)
+mean(ena_second_points_d1)
+mean(ena_first_points_d2)
+mean(ena_second_points_d2)
+sd(ena_first_points_d1)
+sd(ena_second_points_d1)
+sd(ena_first_points_d2)
+sd(ena_second_points_d2)
+length(ena_first_points_d1)
+length(ena_second_points_d1)
+length(ena_first_points_d2)
+length(ena_second_points_d2)

@@ -4,3 +4,8 @@ outputs/
 .DS_Store
 .Rproj.user
 r/r.Rproj
+
+BERTopic_reflection.py
+
+demo/*.png
+demo/*.html
