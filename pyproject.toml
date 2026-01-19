@@ -25,10 +25,7 @@ dependencies = [
 ]
 
 [project.scripts]
-topicena = "topicena.cli:app"
+topicena = "topicena.cli:main"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
-
-[tool.setuptools.packages.find]
-where = ["src"]
+packages = ["topicena"]

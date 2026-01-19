@@ -115,7 +115,7 @@ def main():
 
 
 
-    th = 0.01
+    th = 0.1
 
     binary_arr = (probs >= th).astype(int)
     df = pd.DataFrame(binary_arr)

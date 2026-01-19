@@ -9,3 +9,6 @@ BERTopic_reflection.py
 
 demo/*.png
 demo/*.html
+
+topicena.egg-info/
+topicena/__pycache__/

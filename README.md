@@ -10,19 +10,59 @@ TopicENA/
 ├─ data/
 │  └─ sample/
 │     └─ sample_students.csv
-├─ src/
-│  └─ topicena/
-│     ├─ cli.py
-│     ├─ pipeline.py
-│     ├─ bertopic_step.py
-│     ├─ semantic_coding.py
-│     └─ ena_bridge.py
+├── topicena/
+│   ├── __init__.py
+│   └── cli.py
 ├─ r/
 │  └─ ena_run.R
 ├─ outputs/
 ├─ docker/
 └─ README.md
 ```
+
+
+## Installation (Local / Development Mode)
+
+Clone this repository and install TopicENA in **editable mode**:
+
+```bash
+git clone https://github.com/owen198/topicena.git
+cd topicena
+python -m pip install -e .
+```
+
+Check whether TopicENA is installed and where it is loaded from:
+
+```bash
+python -m pip show topicena
+```
+
+
+## Removing TopicENA
+
+To remove TopicENA from your environment:
+
+```bash
+python -m pip uninstall topicena
+```
+
+## Executing TopicENA
+
+```bash
+topicena \
+  --prob_th 0.01 \
+  --n_neighbors 10 \
+  --n_components 5 \
+  --min_dist 0.0 \
+  --min_cluster_size 20 \
+  --min_samples 5 \
+  --min_topic_size 5 \
+  --window_size_back 20
+```
+
+
+
+
 
 
 ## Installation
