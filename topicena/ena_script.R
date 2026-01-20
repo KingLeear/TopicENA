@@ -18,7 +18,7 @@ unitCols = c("Condition", "UserName")
 headers <- colnames(data)
 codesCols <- setdiff(
   headers,
-  c("Condition", "ActivityNumber", "UserName", "text")
+  c("Condition", "ActivityNumber", "UserName", "text", "doc_id")
 )
 
 conversationCols = c(
@@ -95,41 +95,31 @@ save_ena_html_and_png <- function(p, out_dir=".", prefix="ena",
 save_ena_html_and_png(p, out_dir=out_path, prefix="ena",
                       width=1600, height=1200, zoom=2, delay=1.5)
 
-# save_ena_html <- function(p, out_dir = ".", prefix = "ena") {
-#   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-#   for (g in names(p$plots)) {
-#     w <- p$plots[[g]]$plot
-#     html_file <- file.path(out_dir, sprintf("%s_%s.html", prefix, g))
-
-#     htmlwidgets::saveWidget(
-#       widget = w,
-#       file = html_file,
-#       selfcontained = TRUE
-#     )
-#   }
-# }
-
-# save_ena_html(p, out_dir = out_path, prefix = "ena")
-
-# w <- plot$plot
-
-# libdir <- file.path(dirname(htmlfile), "lib")
-
-# htmlwidgets::saveWidget(
-#   widget = w,
-#   file = htmlfile,
-#   selfcontained = FALSE,
-#   libdir = libdir
-# )
-
-# # webshot2 需要 headless browser（Chromium/Chrome）
-# webshot2::webshot(
-#   url    = htmlfile,
-#   file   = outfile,
-#   vwidth = 1600, vheight = 1200,
-#   zoom   = 2
-# )
 
 message("Wrote: ", normalizePath(outfile, winslash = "/", mustWork = FALSE))
 message("Exists? ", file.exists(outfile))
+
+
+# ena_first_points_d1 = as.matrix(set.ena$points$Condition$HDSE)[,1]
+# ena_second_points_d1 = as.matrix(set.ena$points$Condition$LDSE)[,1]
+# ena_first_points_d2 = as.matrix(set.ena$points$Condition$HDSE)[,2] 
+# ena_second_points_d2 = as.matrix(set.ena$points$Condition$LDSE)[,2]
+# t_test_d1 = t.test(ena_first_points_d1, ena_second_points_d1)
+# t_test_d2 = t.test(ena_first_points_d2, ena_second_points_d2)
+# t_test_d1
+# t_test_d2
+
+
+# mean(ena_first_points_d1)
+# mean(ena_second_points_d1)
+# mean(ena_first_points_d2)
+# mean(ena_second_points_d2)
+# sd(ena_first_points_d1)
+# sd(ena_second_points_d1)
+# sd(ena_first_points_d2)
+# sd(ena_second_points_d2)
+# length(ena_first_points_d1)
+# length(ena_second_points_d1)
+# length(ena_first_points_d2)
+# length(ena_second_points_d2)

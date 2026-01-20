@@ -21,8 +21,7 @@ dependencies = [
     "pandas",
     "plotly",
     "kaleido",
-    "kagglehub",
-    "kaleido"
+    "kagglehub"
 ]
 
 [project.scripts]

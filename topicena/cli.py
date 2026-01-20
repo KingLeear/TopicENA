@@ -82,7 +82,7 @@ def main():
 
     # Stage 2: Create BERTopic output, as the input of rENA
     top_keywords_dict = get_topic_keywords(model)
-    print(top_keywords_dict)
+    # print(top_keywords_dict)
 
     new_columns = [
         ".".join(top_keywords_dict[i][:args.number_of_keywords])
@@ -90,7 +90,7 @@ def main():
     ]
     # print(new_columns)
 
-    topic_df = multi_topic_assignment(probs, prob_th=0.01)
+    topic_df = multi_topic_assignment(probs, prob_th=args.prob_th)
     topic_df.columns = new_columns
     topic_df.insert(0, "doc_id", range(len(topic_df)))
     

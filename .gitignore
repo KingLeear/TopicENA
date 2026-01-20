@@ -8,8 +8,8 @@ r/r.Rproj
 
 BERTopic_reflection.py
 
-demo/*.png
-demo/*.html
+demo/asap20.csv
 
 topicena.egg-info/
 topicena/__pycache__/
+

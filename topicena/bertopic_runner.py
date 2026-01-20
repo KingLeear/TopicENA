@@ -72,7 +72,7 @@ def build_topic_model(cfg: BERTopicConfig) -> BERTopic:
         hdbscan_model=hdbscan_model,
         min_topic_size=cfg.min_topic_size,
         calculate_probabilities=True,
-        verbose=False,
+        verbose=True
     )
     return topic_model
 
