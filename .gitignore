@@ -1,6 +1,7 @@
 .venv/
 src/topicena.egg-info/
 outputs/
+output/
 .DS_Store
 .Rproj.user
 r/r.Rproj

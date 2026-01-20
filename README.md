@@ -60,6 +60,18 @@ topicena \
   --window_size_back 20
 ```
 
+```bash
+topicena --help     
+```
+
+
+## Demo
+```bash
+topicena --input ./data/asap20.csv --n_neighbors 60 --min_dist 0.2 --min_cluster_size 60 --min_topic_size 20 --number_of_keywords 5 --prob_th 0.05
+```
+
+
+
 
 
 
