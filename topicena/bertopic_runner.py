@@ -10,6 +10,8 @@ from bertopic import BERTopic
 from umap import UMAP
 import hdbscan
 
+from sentence_transformers import SentenceTransformer
+from sklearn.feature_extraction.text import CountVectorizer
 
 @dataclass
 class BERTopicConfig:
@@ -67,12 +69,23 @@ def build_topic_model(cfg: BERTopicConfig) -> BERTopic:
         prediction_data=True,
     )
 
+    vectorizer_model = CountVectorizer(
+        stop_words="english",
+        ngram_range=(1, 2),
+        min_df=1,
+    )
+
+    embedding_model = SentenceTransformer("all-mpnet-base-v2")
+
     topic_model = BERTopic(
+        language="english",
         umap_model=umap_model,
         hdbscan_model=hdbscan_model,
+        embedding_model=embedding_model,
+        vectorizer_model=vectorizer_model,
         min_topic_size=cfg.min_topic_size,
         calculate_probabilities=True,
-        verbose=True
+        verbose=False
     )
     return topic_model
 

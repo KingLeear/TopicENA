@@ -7,27 +7,40 @@ TopicENA is a lightweight, open-source pipeline that integrates neural topic mod
 
 ```text
 TopicENA/
-├─ data/
-│  └─ sample/
-│     └─ sample_students.csv
+├─ demo/
+│  ├── README.md
+│  ├── asap20_preprocess.py
+│  └── run_topicena.sh
 ├── topicena/
 │   ├── __init__.py
-│   └── cli.py
-├─ r/
-│  └─ ena_run.R
-├─ outputs/
-├─ docker/
+│   ├── bertopic_runner.py
+│   ├── ena_script.R
+│   ├── cli.py
+│   └── rena_executor.py
+├── pyproject.toml
 └─ README.md
 ```
 
 
-## Installation (Local / Development Mode)
+## 1. Installation
 
 Clone this repository and install TopicENA in **editable mode**:
 
 ```bash
 git clone https://github.com/owen198/topicena.git
 cd topicena
+
+# create virtual environment
+python -m venv .venv
+
+# activate virtual environment
+# macOS / Linux
+source .venv/bin/activate
+
+# Windows
+# .venv\Scripts\activate
+
+# install TopicENA and Python dependencies
 python -m pip install -e .
 ```
 
@@ -35,10 +48,20 @@ Check whether TopicENA is installed and where it is loaded from:
 
 ```bash
 python -m pip show topicena
+
+topicena --help  
 ```
 
 
-## Removing TopicENA
+## 2. Executing TopicENA
+
+```bash
+topicena 
+```
+
+
+
+## 3. Removing TopicENA
 
 To remove TopicENA from your environment:
 
@@ -46,55 +69,36 @@ To remove TopicENA from your environment:
 python -m pip uninstall topicena
 ```
 
-## Executing TopicENA
 
-```bash
-topicena \
-  --prob_th 0.01 \
-  --n_neighbors 10 \
-  --n_components 5 \
-  --min_dist 0.0 \
-  --min_cluster_size 20 \
-  --min_samples 5 \
-  --min_topic_size 5 \
-  --window_size_back 20
+
+## 4. Troubleshooting
+
+### Duplicate keyword columns detected
+
+If you encounter the following warning during execution:
+```
+Duplicate keyword columns detected
+This usually indicates that the topic configuration is too fine-grained.
 ```
 
-```bash
-topicena --help     
-```
+This means that BERTopic has produced topics with overlapping or identical keywords**, which can lead to duplicated semantic codes in the ENA input and cause issues in downstream analysis. This situation typically occurs when the topic modeling configuration is too fine-grained, resulting in multiple topics sharing very similar top keywords.
 
+### Recommended solutions
 
-## Demo
-```bash
-topicena --input ./data/asap20.csv --n_neighbors 60 --min_dist 0.2 --min_cluster_size 60 --min_topic_size 20 --number_of_keywords 5 --prob_th 0.05
-```
+The simplest and most effective solution is to increase the `number_of_keywords` used to represent each topic, so that topic codes become more distinctive. By default, TopicENA uses the last `2` keywords of each topic to construct semantic codes. You may try increasing this value.
 
-
-
-
-
-
-
-
-## Installation
+For example:
 
 ```bash
-
-python -m venv .venv
-
-source .venv/bin/activate
-
-pip install -e .
-
-Rscript r/requirements.R
+topicena
+  --number_of_keywords 3
 ```
 
 
 
 
 
-## Execution
+## BERTopic
 
 BERTopic Test
 
@@ -116,41 +120,3 @@ topicena run \
   --outdir outputs
 ```
 
-
-## Output
-
-```text
-outputs/
-└─ <run_id>/
-   ├─ bertopic/
-   │  ├─ doc_topics.csv
-   │  └─ topic_info.csv
-   ├─ viz/
-   │  └─ topic_visualizations.png
-   ├─ ena_input/
-   │  └─ codes_long.csv
-   └─ ena/
-      ├─ ena_network.png
-      ├─ ena_difference.png
-      └─ ena_stats.csv
-```
-
----
-
-## Python–R Integration
-
-TopicENA uses **Python as the main pipeline controller** and **R for Epistemic Network Analysis (ENA)**.
-
-The interaction between Python and R follows a simple file-based workflow:
-
-1. **Python stage**
-   - Python performs topic modeling using BERTopic.
-   - Topic assignments are automatically transformed into semantic codes.
-   - Intermediate ENA input files (e.g., `codes_long.csv`, `metadata.csv`) are written to disk.
-
-2. **R stage**
-   - Python invokes the R script (`r/ena_run.R`) via `Rscript`.
-   - The R script reads the generated CSV files and runs ENA.
-   - ENA network visualizations and statistical outputs are saved to the output directory.
-
-This loose coupling design keeps the system lightweight, transparent, and easy to reproduce, while allowing researchers to modify or extend the Python and R components independently.

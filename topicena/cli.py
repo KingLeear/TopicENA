@@ -24,7 +24,7 @@ def main():
     parser.add_argument("--input", type=str, required=True, help="Path to input CSV file (e.g., data/asap20.csv)")
     parser.add_argument("--topic_file", type=str, default="ena_input.csv", help="File to record doc topic, as the input to ENA script (e.g., ena_input.csv)")
     parser.add_argument("--output", type=str, default="output", help="Path to output BERTopic and rENA results (e.g., output)")
-    parser.add_argument("--number_of_keywords", type=int, default=2, help="Probability threshold for multi-topic assignment (default: 0.01)")
+    parser.add_argument("--number_of_keywords", type=int, default=2, help="Number of keywords used to represent each topic in ENA visualization (default: 2)")
 
     # UMAP
     parser.add_argument("--n_neighbors", type=int, default=10, help="UMAP n_neighbors parameter (default: 10)")

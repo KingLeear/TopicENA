@@ -30,7 +30,14 @@ topicena \
   --prob_th 0.01
 ```
 
-The analysis results will be automatically saved to the default output folder:
+The analysis results will be automatically saved to the default `output` folder
+
+
+### 3. Batch Execution Script
+
+This script runs multiple `topicena` jobs sequentially with different BERTopic configurations, from fine-grained to coarse-grained settings. Each job prints progress messages to the console, continues even if a single run fails, and records failed runs in a log file.
+
 ```bash
-output
+chmod +x run_topicena_10.sh
+./run_topicena.sh
 ```

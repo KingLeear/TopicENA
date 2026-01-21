@@ -1,7 +1,6 @@
 .venv/
-src/topicena.egg-info/
-outputs/
-output/
+venv/
+
 .DS_Store
 .Rproj.user
 r/r.Rproj
@@ -13,3 +12,5 @@ demo/asap20.csv
 topicena.egg-info/
 topicena/__pycache__/
 
+outputs/
+output/
