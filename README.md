@@ -168,3 +168,6 @@ topicena run \
   --outdir outputs
 ```
 
+
+I should add a ENA3D pipeline after this too.
+
