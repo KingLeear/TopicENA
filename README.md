@@ -22,9 +22,9 @@ TopicENA/
 ```
 
 
-## 1. Installation
+## Installation
 
-Clone this repository and install TopicENA in **editable mode**:
+Clone this repository and install TopicENA in editable mode:
 
 ```bash
 git clone https://github.com/owen198/topicena.git
@@ -53,7 +53,7 @@ topicena --help
 ```
 
 
-## 2. Executing TopicENA
+## Executing TopicENA
 
 ```bash
 topicena 
@@ -61,7 +61,7 @@ topicena
 
 
 
-## 3. Removing TopicENA
+## Removing TopicENA
 
 To remove TopicENA from your environment:
 
@@ -69,9 +69,57 @@ To remove TopicENA from your environment:
 python -m pip uninstall topicena
 ```
 
+## Command-Line Parameters
+
+This section summarizes the main command-line parameters used in TopicENA, along with their default values and purposes.
+
+### Core TopicENA Parameters
+
+| Parameter | Type | Default | Description |
+|---------|------|---------|-------------|
+| `--input` | string | **required** | Path to the input CSV file (e.g., `data/sample/sample_students.csv`) |
+| `--output` | string | `output` | Directory to store all BERTopic and rENA outputs |
+| `--topic_file` | string | `ena_input.csv` | File name used to record document–topic assignments as input to the ENA script |
+| `--prob_th` | float | `0.01` | Probability threshold for multi-topic assignment |
+| `--number_of_keywords` | int | `2` | Number of keywords used to represent each topic in ENA visualization |
+
+---
+
+### UMAP Parameters (Topic Embedding)
+
+| Parameter | Type | Default | Description |
+|---------|------|---------|-------------|
+| `--n_neighbors` | int | `10` | UMAP parameter controlling local neighborhood size |
+| `--n_components` | int | `5` | Number of embedding dimensions produced by UMAP |
+| `--min_dist` | float | `0.0` | Minimum distance between embedded points |
+
+---
+
+### HDBSCAN Parameters (Clustering)
+
+| Parameter | Type | Default | Description |
+|---------|------|---------|-------------|
+| `--min_cluster_size` | int | `20` | Minimum size of topic clusters |
+| `--min_samples` | int | `5` | Controls cluster robustness and noise sensitivity |
+
+---
+
+### BERTopic Parameters
+
+| Parameter | Type | Default | Description |
+|---------|------|---------|-------------|
+| `--min_topic_size` | int | `5` | Minimum number of documents per topic |
+
+---
+
+### rENA Parameters
+
+| Parameter | Type | Default | Description |
+|---------|------|---------|-------------|
+| `--window_size_back` | int | `20` | rENA `window.size.back` parameter controlling temporal co-occurrence |
 
 
-## 4. Troubleshooting
+## Troubleshooting
 
 ### Duplicate keyword columns detected
 
@@ -81,7 +129,7 @@ Duplicate keyword columns detected
 This usually indicates that the topic configuration is too fine-grained.
 ```
 
-This means that BERTopic has produced topics with overlapping or identical keywords**, which can lead to duplicated semantic codes in the ENA input and cause issues in downstream analysis. This situation typically occurs when the topic modeling configuration is too fine-grained, resulting in multiple topics sharing very similar top keywords.
+This means that BERTopic has produced topics with overlapping or identical keywords, which can lead to duplicated semantic codes in the ENA input and cause issues in downstream analysis. This situation typically occurs when the topic modeling configuration is too fine-grained, resulting in multiple topics sharing very similar top keywords.
 
 ### Recommended solutions
 

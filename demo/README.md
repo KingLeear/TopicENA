@@ -21,7 +21,7 @@ https://www.kaggle.com/datasets/lburleigh/asap-2-0
 
 ```bash
 topicena \
-  --input ./demo/asap20.csv \
+  --input ./asap20.csv \
   --n_neighbors 60 \
   --min_dist 0.2 \
   --min_cluster_size 60 \
@@ -39,5 +39,6 @@ This script runs multiple `topicena` jobs sequentially with different BERTopic c
 
 ```bash
 chmod +x run_topicena_10.sh
+
 ./run_topicena.sh
 ```
