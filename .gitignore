@@ -8,11 +8,4 @@ demo/asap20.csv
 topicena.egg-info/
 topicena/__pycache__/
 
-
 # development (to-be removed asap)
-.Rproj.user
-r
-BERTopic_reflection.py
-outputs/
-output/
-run_topicena_10.sh
