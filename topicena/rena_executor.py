@@ -71,7 +71,8 @@ def run_rena_rscript(
     #     raise FileNotFoundError(f"R script not found: {r_script_path}")
 
 
-    ena_r_script = "./topicena/ena_script.R" 
+    # ena_r_script = "./topicena/ena_script.R" 
+    ena_r_script = Path(__file__).resolve().parent / "ena_script.R"
 
     # r_script_path = str(root / "r" / "example.R")
 
