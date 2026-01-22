@@ -85,7 +85,7 @@ def build_topic_model(cfg: BERTopicConfig) -> BERTopic:
         vectorizer_model=vectorizer_model,
         min_topic_size=cfg.min_topic_size,
         calculate_probabilities=True,
-        verbose=False
+        verbose=True
     )
     return topic_model
 

@@ -13,6 +13,12 @@ import pandas as pd
 def ensure_dir(path: str) -> None:
     os.makedirs(path, exist_ok=True)
 
+def try_write_png(fig, out_png: str) -> None:
+    try:
+        fig.write_image(out_png, scale=2)
+    except Exception as e:
+        print(f"[SKIP] PNG export failed (install kaleido?): {out_png}\n  Reason: {e}")
+
 def main():
 
 
@@ -122,6 +128,17 @@ def main():
 
 
     # Stage 3: Plot BERTopic results
+    # (A) Topic overview
+    fig_topics = model.visualize_topics()
+    out_html = os.path.join(args.output, "fig_topics_overview.html")
+    fig_topics.write_html(out_html)
+    try_write_png(fig_topics, os.path.join(args.output, "fig_topics_overview.png"))
+
+    # (B) Keywords
+    fig_barchart = model.visualize_barchart(top_n_topics=10, n_words=5)
+    out_html = os.path.join(args.output, "fig_topic_keywords_barchart.html")
+    fig_barchart.write_html(out_html)
+    try_write_png(fig_barchart, os.path.join(args.output, "fig_topic_keywords_barchart.png"))
 
 
     # Stage 4: ENA
