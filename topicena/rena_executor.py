@@ -93,6 +93,8 @@ def run_rena_rscript(
     if extra_args:
         cmd.extend(extra_args)
 
+    cmd = [str(x) for x in cmd]
+
     result = subprocess.run(
         cmd,
         cwd=cwd,

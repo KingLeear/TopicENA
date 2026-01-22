@@ -1,6 +1,6 @@
 # ena_example.R
 options(repos = c(CRAN = "https://cloud.r-project.org"))
-install.packages(c("htmlwidgets", "htmltools", "devtools", "pkgload", "webshot2"))
+install.packages(c("rENA", "htmlwidgets", "htmltools", "devtools", "pkgload", "webshot2"))
 
 library(rENA)
 
