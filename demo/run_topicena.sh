@@ -27,7 +27,7 @@ for WSB in 15 20 30; do
             --number_of_keywords "$NUM_KEYWORDS" \
             --prob_th "$PTH" \
             --output "$OUT" \
-            --window_size_back "$WSB"\
+            --window_size_back "$WSB" \
             || echo "[FAIL] $OUT (nn=$NN md=$MD mcs=$MCS pth=$PTH)"
 
             RUN_ID=$((RUN_ID + 1))
