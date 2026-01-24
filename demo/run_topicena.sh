@@ -12,7 +12,7 @@ for WSB in 15 20 30; do
   for NN in 40 60 80; do
     for MD in 0.15 0.20 0.25; do
       for MCS in 60 80 100; do
-        for PTH in 0.01 0.05 0.1; do
+        for PTH in 0.01 0.05 0.1 0.2; do
 
             OUT=$(printf "testwsb_%03d" "$RUN_ID")
 

@@ -38,7 +38,7 @@ The analysis results will be automatically saved to the default `output` folder
 This script runs multiple `topicena` jobs sequentially with different BERTopic configurations, from fine-grained to coarse-grained settings. Each job prints progress messages to the console, continues even if a single run fails, and records failed runs in a log file.
 
 ```bash
-chmod +x run_topicena_10.sh
+chmod +x run_topicena.sh
 
 ./run_topicena.sh
 ```

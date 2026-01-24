@@ -1,5 +1,5 @@
 # TopicENA
-TopicENA is a lightweight, open-source pipeline that integrates neural topic modeling with Epistemic Network Analysis (ENA) to support scalable discourse structure analysis.
+TopicENA is a lightweight, open-source pipeline for scalable Epistemic Network Analysis, combining neural topic modeling with automated semantic coding and human-in-the-loop interpretation.
 
 
 
