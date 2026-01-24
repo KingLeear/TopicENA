@@ -72,7 +72,9 @@ def build_topic_model(cfg: BERTopicConfig) -> BERTopic:
     vectorizer_model = CountVectorizer(
         stop_words="english",
         ngram_range=(1, 2),
-        min_df=1,
+        min_df=10,
+        max_df=0.7,
+        max_features=30000,
     )
 
     embedding_model = SentenceTransformer("all-mpnet-base-v2")
