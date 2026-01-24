@@ -73,7 +73,6 @@ def build_topic_model(cfg: BERTopicConfig) -> BERTopic:
         stop_words="english",
         ngram_range=(1, 2),
         min_df=10,
-        max_df=0.7,
         max_features=30000,
     )
 
