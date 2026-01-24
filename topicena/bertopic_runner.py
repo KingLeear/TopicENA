@@ -69,12 +69,15 @@ def build_topic_model(cfg: BERTopicConfig) -> BERTopic:
         prediction_data=True,
     )
 
+    token_pattern=r"(?u)\b[a-zA-Z]{3,}\b"
+
     vectorizer_model = CountVectorizer(
         stop_words="english",
-        ngram_range=(1, 2),
+        ngram_range=(1, 1),
         min_df=0.002,
         max_df=0.8,
         max_features=30000,
+        token_pattern=r"(?u)\b[a-zA-Z]{3,}\b",
     )
 
     embedding_model = SentenceTransformer("all-mpnet-base-v2")

@@ -1,5 +1,5 @@
 INPUT="./asap20.csv"
-NUM_KEYWORDS=3
+NUM_KEYWORDS=2
 MIN_TOPIC_SIZE=20
 
 set +e
