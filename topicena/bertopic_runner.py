@@ -72,7 +72,8 @@ def build_topic_model(cfg: BERTopicConfig) -> BERTopic:
     vectorizer_model = CountVectorizer(
         stop_words="english",
         ngram_range=(1, 2),
-        min_df=10,
+        min_df=0.002,
+        max_df=0.8,
         max_features=30000,
     )
 
