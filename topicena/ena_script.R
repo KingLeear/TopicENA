@@ -13,9 +13,9 @@ window_size_back <- as.integer(args[3])
 
 
 
-# message("argument[1]: ", in_path)
-# message("argument[2]: ", out_path)
-# message("argument[3]: ", window_size_back)
+message("argument[1]: ", in_path)
+message("argument[2]: ", out_path)
+message("argument[3]: ", window_size_back)
 
 
 data <- read.csv(in_path) 

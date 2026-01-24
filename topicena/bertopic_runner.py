@@ -77,7 +77,7 @@ def build_topic_model(cfg: BERTopicConfig) -> BERTopic:
         min_df=0.002,
         max_df=0.8,
         max_features=30000,
-        token_pattern=r"(?u)\b[a-zA-Z]{3,}\b",
+        token_pattern=token_pattern,
     )
 
     embedding_model = SentenceTransformer("all-mpnet-base-v2")

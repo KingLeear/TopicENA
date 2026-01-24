@@ -10,7 +10,7 @@ from typing import List, Optional
 
 @dataclass
 class RENAConfig:
-    window_size_back: int = 20
+    window_size_back: int = ""
     ena_input: str = ""  
     ena_output: str = ""
 
