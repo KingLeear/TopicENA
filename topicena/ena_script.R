@@ -4,15 +4,22 @@ install.packages(c("rENA", "htmlwidgets", "htmltools", "devtools", "pkgload", "w
 
 library(rENA)
 
-# Rscript /Users/owen/Documents/TopicENA/r/example.R /Users/owen/Documents/TopicENA/r/RS.data.rda /Users/owen/Documents/TopicENA/outputs
+# Rscript topicena/ena_script.R ./demo/test_001/ena_input.csv ./demo/ 20
 
 args <- commandArgs(trailingOnly = TRUE)
 in_path <- normalizePath(args[1], mustWork = TRUE)
 out_path <- normalizePath(args[2], mustWork = TRUE)
-# window_size_back <- normalizePath(args[3], mustWork = TRUE)
+window_size_back <- as.integer(args[3])
 
 
-data <- read.csv(in_path) # Leet paper
+
+# message("argument[1]: ", in_path)
+# message("argument[2]: ", out_path)
+# message("argument[3]: ", window_size_back)
+
+
+data <- read.csv(in_path) 
+
 unitCols = c("Condition", "UserName")
 
 headers <- colnames(data)
@@ -38,7 +45,7 @@ set.ena = ena(
   units = unitCols,
   codes = codesCols,
   conversation = conversationCols,
-  window.size.back = 20,
+  window.size.back = window_size_back,
   groupVar = groupsVar,
   groups = groups,
   mean = TRUE
@@ -53,8 +60,7 @@ set.ena = ena(
 
 
 
-outfile  <- file.path(out_path, "ena_plot.png")
-# htmlfile <- file.path(out_path, "ena_plot.html")
+# outfile  <- file.path(out_path, "ena_plot.png")
 
 p = ena.plotter(set.ena,
                    points = T,
@@ -93,12 +99,12 @@ save_ena_html_and_png <- function(p, out_dir=".", prefix="ena",
 }  
 
 save_ena_html_and_png(p, out_dir=out_path, prefix="ena",
-                      width=1600, height=1200, zoom=2, delay=1.5)
+                      width=500, height=500, zoom=2, delay=1.5)
 
 
 
-message("Wrote: ", normalizePath(outfile, winslash = "/", mustWork = FALSE))
-message("Exists? ", file.exists(outfile))
+# message("Wrote: ", normalizePath(outfile, winslash = "/", mustWork = FALSE))
+# message("Exists? ", file.exists(outfile))
 
 
 # ena_first_points_d1 = as.matrix(set.ena$points$Condition$HDSE)[,1]

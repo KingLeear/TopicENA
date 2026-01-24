@@ -44,6 +44,15 @@ source .venv/bin/activate
 python -m pip install -e .
 ```
 
+Install the required R packages as a normal user (not root):
+
+```bash
+R -q -e 'install.packages(
+  c("rENA", "htmlwidgets", "htmltools", "devtools", "pkgload", "webshot2"),
+  repos = "https://cloud.r-project.org"
+)'
+```
+
 Check whether TopicENA is installed and where it is loaded from:
 
 ```bash
@@ -142,29 +151,21 @@ topicena
   --number_of_keywords 3
 ```
 
+### Do NOT run as root
 
+This project must not be run as root. If you run the pipeline with sudo, `Chrome/Chromium` will fail to start and image export (PNG) will not work.
 
+### Required system dependencies (Ubuntu)
 
-
-## BERTopic
-
-BERTopic Test
-
-```bash
-(venv) python BERTopic.py
-```
+Before installing R packages, make sure these system libraries are installed:
 
 ```bash
-(venv) python calling_r.py
+sudo apt update
+sudo apt install -y \
+  build-essential pkg-config \
+  libcurl4-openssl-dev libssl-dev \
+  libxml2-dev \
+  libfontconfig1-dev libfreetype6-dev \
+  libharfbuzz-dev libfribidi-dev \
+  libpng-dev libjpeg-dev
 ```
-
-```bash
-topicena run \
-  --input data/sample/sample_students.csv \
-  --text-col text \
-  --id-col student_id \
-  --group-col group \
-  --n-topics 10 \
-  --outdir outputs
-```
-
