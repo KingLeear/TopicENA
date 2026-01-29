@@ -10,7 +10,7 @@ from topicena.rena_executor import RENAConfig, run_rena_rscript
 import pandas as pd
 
 
-def ensure_dir(path: str) -> None:
+def ensure_dir(path: str) -> None: 
     os.makedirs(path, exist_ok=True)
 
 def try_write_png(fig, out_png: str) -> None:
@@ -24,6 +24,7 @@ def main():
 
     # Stage 0: Load config
     parser = argparse.ArgumentParser(prog="topicena", description="TopicENA: Topic-based Epistemic Network Analysis")
+
 
     # TopicENA
     parser.add_argument("--prob_th", type=float, default=0.01, help="Probability threshold for multi-topic assignment (default: 0.01)")
@@ -47,21 +48,39 @@ def main():
     # rENA
     parser.add_argument("--window_size_back", type=int, default=20, help="rENA window.size.back parameter (default: 20)")
 
+    #1/29 Tiffany
+    # Input column names (make CLI dataset-agnostic)
+    parser.add_argument("--text_col", type=str, default="reflection",
+                        help="Name of the column containing text (default: reflection)")
+    parser.add_argument("--id_col", type=str, default="id",
+                        help="Name of the column containing user/document id (default: id)")
+    parser.add_argument("--group_col", type=str, default="group",
+                        help="Name of the column containing group/condition labels (default: group)")
+
+
     args = parser.parse_args()
-    # print(args)
-
-
-
 
 
     # Stage 1: Load dataset
     input_path = Path(args.input)
+    input_pd = pd.read_csv(input_path) 
     # if not input_path.exists():
     #     raise FileNotFoundError(f"Input file not found: {input_path}")
 
-    input_pd = pd.read_csv(input_path)
-    docs = input_pd["reflection"].astype("str").to_list()
+    #input_pd = pd.read_csv(input_path)
+    #docs = input_pd["reflection"].astype("str").to_list()
+    #input_pd = pd.read_csv(input_path)
 
+    # Validate required columns
+    missing = [c for c in [args.text_col, args.id_col, args.group_col] if c not in input_pd.columns]
+    if missing:
+        raise ValueError(
+            f"Missing column(s): {missing}. "
+            f"Available columns: {list(input_pd.columns)}. "
+            f"Use --text_col/--id_col/--group_col to specify."
+        )
+
+    docs = input_pd[args.text_col].astype("str").to_list()
 
 
 
@@ -102,8 +121,10 @@ def main():
     
     topic_df.insert(0, "text", docs)
 
-    topic_df["UserName"] = input_pd["id"].values
-    topic_df["Condition"] = input_pd["group"].values
+    #topic_df["UserName"] = input_pd["id"].values
+    #topic_df["Condition"] = input_pd["group"].values
+    topic_df["UserName"] = input_pd[args.id_col].values
+    topic_df["Condition"] = input_pd[args.group_col].values
 
     topic_df = topic_df.reset_index().rename(columns={"index": "ActivityNumber"})
 
