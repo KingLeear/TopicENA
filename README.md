@@ -43,12 +43,27 @@ source .venv/bin/activate
 # install TopicENA and Python dependencies
 python -m pip install -e .
 ```
+### EC2 / Ubuntu setup
+
+Before installing R packages, make sure these system libraries are installed:
+
+```bash
+chmod +x setup_ubuntu.sh
+./setup_ubuntu.sh
+```
+
 
 Install the required R packages as a normal user (not root):
 
 ```bash
 R -q -e 'install.packages(
-  c("rENA", "htmlwidgets", "htmltools", "devtools", "pkgload", "webshot2"),
+  c("openssl", "curl", "xml2",
+    "httr", "httr2",
+    "credentials", "gert", "gh",
+    "systemfonts", "textshaping", "ragg",
+    "plotly",
+    "webshot2",
+    "rENA",
   repos = "https://cloud.r-project.org"
 )'
 ```
@@ -155,17 +170,3 @@ topicena
 
 This project must not be run as root. If you run the pipeline with sudo, `Chrome/Chromium` will fail to start and image export (PNG) will not work.
 
-### Required system dependencies (Ubuntu)
-
-Before installing R packages, make sure these system libraries are installed:
-
-```bash
-sudo apt update
-sudo apt install -y \
-  build-essential pkg-config \
-  libcurl4-openssl-dev libssl-dev \
-  libxml2-dev \
-  libfontconfig1-dev libfreetype6-dev \
-  libharfbuzz-dev libfribidi-dev \
-  libpng-dev libjpeg-dev
-```
