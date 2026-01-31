@@ -69,10 +69,15 @@ def build_topic_model(cfg: BERTopicConfig) -> BERTopic:
         prediction_data=True,
     )
 
+    token_pattern=r"(?u)\b[a-zA-Z]{3,}\b"
+
     vectorizer_model = CountVectorizer(
         stop_words="english",
-        ngram_range=(1, 2),
-        min_df=1,
+        ngram_range=(1, 1),
+        min_df=0.002,
+        max_df=0.8,
+        max_features=30000,
+        token_pattern=token_pattern,
     )
 
     embedding_model = SentenceTransformer("all-mpnet-base-v2")
@@ -85,7 +90,7 @@ def build_topic_model(cfg: BERTopicConfig) -> BERTopic:
         vectorizer_model=vectorizer_model,
         min_topic_size=cfg.min_topic_size,
         calculate_probabilities=True,
-        verbose=False
+        verbose=True
     )
     return topic_model
 

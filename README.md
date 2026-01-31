@@ -1,5 +1,5 @@
 # TopicENA
-TopicENA is a lightweight, open-source pipeline that integrates neural topic modeling with Epistemic Network Analysis (ENA) to support scalable discourse structure analysis.
+TopicENA is a lightweight, open-source pipeline for scalable Epistemic Network Analysis, combining neural topic modeling with automated semantic coding and human-in-the-loop interpretation.
 
 
 
@@ -24,6 +24,19 @@ TopicENA/
 
 ## Installation
 
+Install the following packages in Ubuntu
+
+```bash
+sudo apt update
+sudo apt install -y \
+  build-essential pkg-config \
+  libcurl4-openssl-dev libssl-dev \
+  libxml2-dev \
+  libfontconfig1-dev libfreetype6-dev \
+  libharfbuzz-dev libfribidi-dev \
+  libpng-dev libjpeg-dev
+```
+
 Clone this repository and install TopicENA in editable mode:
 
 ```bash
@@ -42,6 +55,15 @@ source .venv/bin/activate
 
 # install TopicENA and Python dependencies
 python -m pip install -e .
+```
+
+Install the required R packages as a normal user (not root):
+
+```bash
+R -q -e 'install.packages(
+  c("rENA", "htmlwidgets", "htmltools", "devtools", "pkgload", "webshot2"),
+  repos = "https://cloud.r-project.org"
+)'
 ```
 
 Check whether TopicENA is installed and where it is loaded from:
@@ -141,33 +163,3 @@ For example:
 topicena
   --number_of_keywords 3
 ```
-
-
-
-
-
-## BERTopic
-
-BERTopic Test
-
-```bash
-(venv) python BERTopic.py
-```
-
-```bash
-(venv) python calling_r.py
-```
-
-```bash
-topicena run \
-  --input data/sample/sample_students.csv \
-  --text-col text \
-  --id-col student_id \
-  --group-col group \
-  --n-topics 10 \
-  --outdir outputs
-```
-
-
-I should add a ENA3D pipeline after this too.
-

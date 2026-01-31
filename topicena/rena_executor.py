@@ -10,7 +10,7 @@ from typing import List, Optional
 
 @dataclass
 class RENAConfig:
-    window_size_back: int = 20
+    window_size_back: int = ""
     ena_input: str = ""  
     ena_output: str = ""
 
@@ -70,8 +70,6 @@ def run_rena_rscript(
     # if not os.path.exists(r_script_path):
     #     raise FileNotFoundError(f"R script not found: {r_script_path}")
 
-
-    # ena_r_script = "./topicena/ena_script.R" 
     ena_r_script = Path(__file__).resolve().parent / "ena_script.R"
 
     # r_script_path = str(root / "r" / "example.R")
@@ -81,17 +79,13 @@ def run_rena_rscript(
         ena_r_script,
         cfg.ena_input,
         cfg.ena_output,
+        cfg.window_size_back
     ]
-
-    # cmd = [
-    #     rscript,
-    #     r_script_path,
-    #     "--window_size_back",
-    #     str(cfg.window_size_back),
-    # ]
 
     if extra_args:
         cmd.extend(extra_args)
+
+    cmd = [str(x) for x in cmd]
 
     result = subprocess.run(
         cmd,
